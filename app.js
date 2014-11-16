@@ -6,11 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session')
 var flash = require('connect-flash');
+var fixtures = require('mongoose-fixtures');
 
 var routes = require('./routes/index');
 var users = require('./routes/user');
 
 var mongoose = require('mongoose');
+fixtures.load('/express4crud/fixtures/persons.js')
 
 mongoose.connect('mongodb://localhost/crudtest');
 
