@@ -6,13 +6,15 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session')
 var flash = require('connect-flash');
-var fixtures = require('mongoose-fixtures');
+
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var routes = require('./routes/index');
 var users = require('./routes/user');
 
 var mongoose = require('mongoose');
-fixtures.load('/express4crud/fixtures/persons.js')
+
 
 mongoose.connect('mongodb://localhost/crudtest');
 
@@ -24,6 +26,8 @@ app.set('view engine', 'jade');
 
 // app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(logger('dev'));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
@@ -43,6 +47,15 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
+/**
+* Passport Auth Strategy
+*/
+require('./authpassport');
+
+/**
+* Passport Auth
+*/
+require('./routes/auth');
 
 /// error handlers
 
